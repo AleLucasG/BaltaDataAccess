@@ -14,7 +14,7 @@ namespace BaltaDataAccess.Models
 
         public string Description { get; set; }
 
-        public bool Feature { get; set; }
+        public bool Featured { get; set; }
 
         
     }
