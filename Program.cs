@@ -16,10 +16,10 @@ namespace BaltaDataAccess
                 //CreateCategory(connection);
                 //CreateManyCategory(connection);
                 //UpdateCategory(connection);
-                DeleteCategory(connection);
+                //DeleteCategory(connection);
                 //ListCategories(connection);
                 //CreateCategory(connection);
-                //GetCategory(connection);
+                GetCategory(connection);
             }  
         }
 
@@ -35,7 +35,12 @@ namespace BaltaDataAccess
 
         static void GetCategory(SqlConnection connection)
         {
-
+            var category = connection.QueryFirstOrDefault<Category>("SELECT TOP 1 [Id], [Title] FROM [Category] WHERE [Id]=@id",
+                new
+                {
+                    id = "af3407aa-11ae-4621-a2ef-2028b85507c4"
+                });
+            Console.WriteLine($"{category.Id} - {category.Title}");
         }
 
         static void CreateCategory(SqlConnection connection)
@@ -74,7 +79,6 @@ namespace BaltaDataAccess
                     category.Description,
                     category.Featured
                 });
-
                 Console.WriteLine($"{rows} linhas inseridas.");
 
         }
