@@ -18,14 +18,37 @@ namespace BaltaDataAccess
             category.Description = "Categoria destinada a serviços do AWS";
             category.Order = 8;
             category.Summary = "AWS Cloud";
-            category.Feature = false;
+            category.Featured = false;
 
+            // nunca concatenar strings
+            // criação de parametros definidos com @ na querie
             var insertSql = @"INSERT INTO 
                                 [Category] 
-                             VALUES(NEWID(), id, title, url, summary, order, description, featured)";
+                             VALUES(
+                                @Id, 
+                                @Title, 
+                                @Url, 
+                                @Summary, 
+                                @Order, 
+                                @Description, 
+                                @Featured)";
 
             using (var connection = new SqlConnection(connectionString))
             {  
+                // vai executar o Insert e mapear os parametros
+                var rows = connection.Execute(insertSql, new
+                {
+                    category.Id,
+                    category.Title,
+                    category.Url,
+                    category.Summary,
+                    category.Order,
+                    category.Description,
+                    category.Featured
+                });
+
+                Console.WriteLine($"{rows} linhas inseridas.");
+
                 var categories = connection.Query<Category>("SELECT [Id], [Title] FROM [Category] ORDER BY [Title]");
                 foreach(var item in categories)
                 {
