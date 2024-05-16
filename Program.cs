@@ -16,10 +16,10 @@ namespace BaltaDataAccess
                 //CreateCategory(connection);
                 //CreateManyCategory(connection);
                 //UpdateCategory(connection);
-                //DeleteCategory(connection);
+                DeleteCategory(connection);
                 //ListCategories(connection);
                 //CreateCategory(connection);
-                GetCategory(connection);
+                //GetCategory(connection);
             }  
         }
 
@@ -99,11 +99,13 @@ namespace BaltaDataAccess
 
         static void DeleteCategory(SqlConnection connection)
         {
-            var categories = connection.Query<Category>("DELETE FROM [Category] WHERE[Id]=@Id", new { Id = "5a41dc2d-3485-45dc-9f13-faac7e2ed8ca" });
-            foreach(var item in categories)
+            var deleteQuery = "DELETE [Category] WHERE [Id]=@id";
+            var rows = connection.Execute(deleteQuery, new
             {
-                Console.WriteLine($"{item.Id} - {item.Title}");
-            }
+                id = new Guid("ea8059a2-e679-4e74-99b5-e4f0b310fe6f"),
+            });
+
+            Console.WriteLine($"{rows} registros excluídos");
         }
 
 
