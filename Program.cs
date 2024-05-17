@@ -191,7 +191,7 @@ namespace BaltaDataAccess
 
             foreach(var item in courses)
             {
-                Console.WriteLine(item.Id);
+                Console.WriteLine(item.Title);
             }
         }
 
