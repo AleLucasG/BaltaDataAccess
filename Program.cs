@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using BaltaDataAccess.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -16,10 +17,11 @@ namespace BaltaDataAccess
                 //CreateCategory(connection);
                 //CreateManyCategory(connection);
                 //UpdateCategory(connection);
-                DeleteCategory(connection);
+                //DeleteCategory(connection);
                 //ListCategories(connection);
                 //CreateCategory(connection);
                 //GetCategory(connection);
+                ExecuteProcedure(connection);
             }  
         }
 
@@ -69,17 +71,17 @@ namespace BaltaDataAccess
                                 @Featured)";
 
             // vai executar o Insert e mapear os parametros
-                var rows = connection.Execute(insertSql, new
-                {
-                    category.Id,
-                    category.Title,
-                    category.Url,
-                    category.Summary,
-                    category.Order,
-                    category.Description,
-                    category.Featured
-                });
-                Console.WriteLine($"{rows} linhas inseridas.");
+            var rows = connection.Execute(insertSql, new
+            {
+                category.Id,
+                category.Title,
+                category.Url,
+                category.Summary,
+                category.Order,
+                category.Description,
+                category.Featured
+            });
+            Console.WriteLine($"{rows} linhas inseridas");
 
         }
 
@@ -92,9 +94,7 @@ namespace BaltaDataAccess
                 id = new Guid("af3407aa-11ae-4621-a2ef-2028b85507c4"),
                 title = "Frontend 2021"
             });
-
             Console.WriteLine($"{rows} registros atualizados");
-
         }
 
         static void DeleteCategory(SqlConnection connection)
@@ -169,12 +169,17 @@ namespace BaltaDataAccess
                     }
                     
                 });
-
                 Console.WriteLine($"{rows} linhas inseridas.");
-
         }
 
+        static void ExecuteProcedure(SqlConnection connection)
+        {
+            var procedure = "spDeleteStudent";
+            var pars = new { StudentId = "56211af5-5dfa-4137-ae3c-0bd490daa21f" };
+            var affectRows = connection.Execute(procedure, pars, commandType: CommandType.StoredProcedure);
 
+            Console.WriteLine($"{affectRows} linhas afetadas");
+        }
     }    
 }
 
