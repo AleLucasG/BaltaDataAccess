@@ -22,7 +22,8 @@ namespace BaltaDataAccess
                 //CreateCategory(connection);
                 //GetCategory(connection);
                 //ExecuteProcedure(connection);
-                ExecuterReadProcedure(connection);
+                //ExecuterReadProcedure(connection);
+                ExecuteScalar(connection);
             }  
         }
 
@@ -109,7 +110,6 @@ namespace BaltaDataAccess
             Console.WriteLine($"{rows} registros excluídos");
         }
 
-
          static void CreateManyCategory(SqlConnection connection)
         {
             // inserir varios intens ao mesmo tempo
@@ -193,6 +193,40 @@ namespace BaltaDataAccess
             {
                 Console.WriteLine(item.Title);
             }
+        }
+
+        static void ExecuteScalar(SqlConnection connection)
+        {
+            var category = new Category();
+            category.Title = "Amazon AWS";
+            category.Url = "amazon";
+            category.Description = "Categoria destinada a serviços do AWS";
+            category.Order = 8;
+            category.Summary = "AWS Cloud";
+            category.Featured = false;
+
+            // vai gerar GUID no ID
+            var insertSql = @"INSERT INTO 
+                                [Category] 
+                             VALUES(
+                                NEWID(), 
+                                @Title, 
+                                @Url, 
+                                @Summary, 
+                                @Order, 
+                                @Description, 
+                                @Featured)";
+
+            var rows = connection.Execute(insertSql, new
+            {
+                category.Title,
+                category.Url,
+                category.Summary,
+                category.Order,
+                category.Description,
+                category.Featured
+            });
+            Console.WriteLine($"{rows} linhas inseridas");
         }
 
     }    
