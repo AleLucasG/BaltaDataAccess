@@ -25,6 +25,7 @@ namespace BaltaDataAccess
                 //ExecuterReadProcedure(connection);
                 //ExecuteScalar(connection);
                 //ReadView(connection);
+                OneToOne(connection);
             }  
         }
 
@@ -253,7 +254,7 @@ namespace BaltaDataAccess
 
             foreach(var item in items)
             {
-                Console.Write("");
+                Console.Write(item.DurationInMinutes);
             }            
         }
 
