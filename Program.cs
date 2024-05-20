@@ -207,8 +207,9 @@ namespace BaltaDataAccess
 
             // vai gerar GUID no ID
             var insertSql = @"INSERT INTO 
-                                [Category] 
-                             VALUES(
+                                [Category]
+                            OUTPUT inserted.[Id]      
+                            VALUES(
                                 NEWID(), 
                                 @Title, 
                                 @Url, 
@@ -217,7 +218,8 @@ namespace BaltaDataAccess
                                 @Description, 
                                 @Featured)";
 
-            var rows = connection.Execute(insertSql, new
+            // qual ID foi gerado
+            var id = connection.ExecuteScalar<Guid>(insertSql, new
             {
                 category.Title,
                 category.Url,
@@ -226,7 +228,7 @@ namespace BaltaDataAccess
                 category.Description,
                 category.Featured
             });
-            Console.WriteLine($"{rows} linhas inseridas");
+            Console.WriteLine($"A categoria inserida foi: {id}");
         }
 
     }    
