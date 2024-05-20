@@ -246,10 +246,12 @@ namespace BaltaDataAccess
 
         static void OneToOne(SqlConnection connection)
         {
-            // Usando POO, mapeamento e populando
-            var sql = @"SELECT * FROM [CareerItem] 
-                         INNER JOIN[Course]
-                            ON [CareerItem].[CourseId] = [Course].[Id]";
+            // Usando POO, mapeamento de um para um e populando
+            var sql = @"SELECT 
+                            * 
+                        FROM [CareerItem] 
+                        INNER JOIN[Course]
+                        ON [CareerItem].[CourseId] = [Course].[Id]";
 
             var items = connection.Query<CareerItem, Course, CareerItem>(
                 sql,
@@ -261,7 +263,7 @@ namespace BaltaDataAccess
 
             foreach(var item in items)
             {
-                Console.Write(item.Course.Title);
+                Console.Write($"{item.Title} - Curso: {item.Course.Title}");
             }            
         }
 
