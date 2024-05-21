@@ -25,7 +25,8 @@ namespace BaltaDataAccess
                 //ExecuterReadProcedure(connection);
                 //ExecuteScalar(connection);
                 //ReadView(connection);
-                OneToOne(connection);
+                //OneToOne(connection);
+                OneToMany(connection);
             }  
         }
 
@@ -267,7 +268,38 @@ namespace BaltaDataAccess
             }            
         }
 
+        static void OneToMany(SqlConnection connection)
+        {
+            var sql = @"SELECT 
+                            [Career].[Id],
+                            [Career].[Title],
+                            [CareerItem].[CareerId],
+                            [CareerItem].[Title]
+                        FROM
+                            [Career]
+                        INNER JOIN
+                            [CareerItem] ON [CareerItem].[CareerId] = [Career].[Id]
+                        ORDER BY
+                            [Career].[Title]";
 
+            // vamos receber um item de Career, populado com CareerItem e o resultado final sera Career
+            var careers = connection.Query<Career, CareerItem, Career>(
+                sql,
+                (career, item) =>
+                {
+                    // retorna o objeto pai: career
+                    return career;
+                }, splitOn: "CareerId");
+
+            foreach(var career in careers)
+            {
+                Console.Write($"{career.Title}");
+                foreach(var item in career.Items)
+                {
+                    Console.Write($"- {item.Title}");
+                } 
+            }            
+        }
     }    
 }
 
